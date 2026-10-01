@@ -2,67 +2,37 @@
 
 **A lead is not a client. A reply is not revenue. A spreadsheet row wearing a tie is still a spreadsheet row.**
 
-This repo is a public, sanitized slice of the scoring logic behind my private client-acquisition systems. It turns public opportunity evidence into a deterministic score, applies hard rejection gates, deduplicates obvious repeats, and produces a small proof plan for human review.
+This is the public scoring/triage slice from my private acquisition systems.
 
-It does **not** send outreach.
+It does **not** send outreach. It decides which public opportunities deserve more investigation, which should be rejected immediately, and which are worth building a small proof for before a human chooses what to do next.
 
-## Workflow
+![Opportunity workflow](docs/workflow.svg)
 
-```mermaid
-flowchart LR
-    A[Public evidence] --> B[Normalize]
-    B --> C[Deduplicate]
-    C --> D{Hard rejection gate}
-    D -- reject --> X[Archive / ignore]
-    D -- pass --> E[Score evidence]
-    E --> F[Small proof plan]
-    F --> G[Human review]
-    G --> H[Manual contact]
-    H --> I[Record real outcome]
-```
+## What the score means
 
-## What it measures
+Not probability.
 
-- explicit buying intent;
-- budget evidence;
-- urgency;
-- technical fit;
-- proof opportunity;
-- buyer/source confidence;
-- competition/risk;
-- geographic eligibility;
-- stale/duplicate penalties.
+Not “AI confidence.”
 
-A high score does not mean “client secured.” It means “this deserves more attention than the lower-scoring pile.”
+Not “83% chance this person buys.”
 
-## Run
+The score is just an inspectable attention rubric built from explicit evidence such as paid intent, fit, urgency, freshness, and proofability.
 
-```bash
-PYTHONPATH=src python -m unittest discover -s tests
-```
+Some conditions are stronger than a score and become hard rejects instead.
 
-## Example
+## Repo map
 
-```python
-from opportunity_intelligence.core import Opportunity, assess
+| Area | Responsibility |
+|---|---|
+| `models.py` | opportunity + assessment records |
+| `normalization.py` | canonical URLs and duplicate keys |
+| `gates.py` | hard rejection conditions |
+| `scoring.py` | additive evidence rubric |
+| `planning.py` | small reversible proof plan |
+| `core.py` | assessment facade |
+| `tests/` | normalization, gates, score, planning |
+| `docs/` | design reasoning |
 
-opportunity = Opportunity(
-    title="Need help fixing webhook failures",
-    source_url="https://example.test/request/42",
-    explicit_paid_intent=True,
-    budget_known=True,
-    technical_fit=True,
-    proof_possible=True,
-    fresh=True,
-)
+The private systems add discovery, evidence collection, operator review, and real outcome tracking. This repo keeps the part that can be reviewed without private contact data or account access.
 
-print(assess(opportunity))
-```
-
-## Boundary
-
-No scraping bypass, marketplace login, prospect database, private contact data, automatic email, proposal submission, payment action, or fake “conversion probability” is included.
-
-## Provenance
-
-Rewritten from the deterministic scoring and manual-review boundaries in my private `revenue-hunter` and `acquisition-autopilot` repositories.
+> A high score means “look here first,” not “start spending the imaginary commission.”
