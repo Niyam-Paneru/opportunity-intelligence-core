@@ -22,6 +22,12 @@ class Opportunity:
     duplicate_risk: bool = False
     high_competition: bool = False
 
+    def __post_init__(self) -> None:
+        if not self.title.strip():
+            raise ValueError("title_required")
+        if not self.source_url.strip():
+            raise ValueError("source_url_required")
+
 
 @dataclass(frozen=True)
 class Assessment:
