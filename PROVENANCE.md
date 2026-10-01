@@ -6,7 +6,7 @@ This public triage module was rewritten from deterministic scoring and review bo
 
 The current numeric weights were already present in the earlier monolithic implementation at commit `e8cd82301119a45a370969cca05b4bcf4b9fd2be`. Commit `b012bc11cd740182f613b254cad38a742800b342` later split that logic into `scoring.py` without adding calibration evidence.
 
-The public repository contains no dataset, calibration report, experiment, or outcome history that derives the exact `22/16/12/...` values. Therefore the numbers are documented as **configurable heuristic weights chosen for prioritization**, not empirically calibrated outcome likelihood.
+The public repository contains no dataset, calibration report, experiment, or outcome history that derives the exact `22/16/12/...` values. They are therefore documented as **explicit default policy weights used for prioritization**, not empirically calibrated outcome likelihood. They can be changed by editing the policy constants in code; this repository does not expose or claim a learned/runtime calibration system.
 
 ## Preserved behavior
 
