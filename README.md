@@ -16,7 +16,7 @@ This is the public decision core extracted from private acquisition tooling. It 
 
 ## What the score means
 
-The exact `22/16/12/...` values are **configurable heuristic weights chosen for prioritization**. They are not probabilities, confidence scores, or calibrated estimates of conversion likelihood.
+The exact `22/16/12/...` values are **explicit default policy weights defined in code for prioritization**. They are not learned parameters, probabilities, confidence scores, or calibrated estimates of conversion likelihood. Changing those constants changes the triage policy; it does not make the score more predictive.
 
 The public repository contains no dataset, calibration report, controlled experiment, or outcome history that empirically derives those exact values. Treat a higher score only as “inspect this first under the current rubric.” See [PROVENANCE.md](PROVENANCE.md) for the code-history evidence behind that claim.
 
