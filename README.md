@@ -8,7 +8,7 @@ This is the public decision core extracted from private acquisition tooling. It 
 
 ## How the flow works
 
-1. **Normalize identity.** `canonical_url()` removes tracking noise and `duplicate_key()` combines the canonical URL with a normalized title. Callers can use that key to suppress repeated identities before assessment.
+1. **Optional caller-side identity cleanup.** `canonical_url()` removes tracking noise and `duplicate_key()` combines the canonical URL with a normalized title. These helpers are **not called by `assess()`**; callers may use them to suppress repeated identities before assessment.
 2. **Run hard gates first.** Dangerous/regulated scope, expiry, remote ineligibility, or geography ineligibility returns `decision="reject"` immediately. `score()` is not called.
 3. **Score eligible rows.** `scoring.py` adds named positive evidence and subtracts named penalties. Every contribution is returned in `reasons`.
 4. **Map the score to a decision band.** The score controls attention, not predicted outcomes.
