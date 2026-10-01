@@ -16,6 +16,26 @@ class NormalizationTests(unittest.TestCase):
         b = Opportunity("need api fix", "https://example.test/a/")
         self.assertEqual(duplicate_key(a), duplicate_key(b))
 
+    def test_default_https_port_normalizes_away(self):
+        self.assertEqual(
+            canonical_url("https://Example.COM:443/request/1/"),
+            "https://example.com/request/1",
+        )
+
+    def test_relative_source_url_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "invalid_source_url"):
+            canonical_url("/request/1")
+
+    def test_credentials_in_source_url_are_rejected(self):
+        with self.assertRaisesRegex(ValueError, "credentials_not_allowed"):
+            canonical_url("https://user:pass@example.com/request/1")
+
+    def test_blank_opportunity_identity_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "title_required"):
+            Opportunity("   ", "https://example.test/a")
+        with self.assertRaisesRegex(ValueError, "source_url_required"):
+            Opportunity("Need API help", "   ")
+
 
 if __name__ == "__main__":
     unittest.main()
