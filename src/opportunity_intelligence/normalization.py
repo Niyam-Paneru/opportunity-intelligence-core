@@ -8,9 +8,23 @@ from .models import Opportunity
 
 def canonical_url(url: str) -> str:
     parts = urlsplit(url.strip())
-    host = parts.netloc.lower()
-    path = re.sub(r"/+$", "", parts.path or "/")
-    return urlunsplit((parts.scheme.lower(), host, path, "", ""))
+    scheme = parts.scheme.lower()
+
+    if scheme not in {"http", "https"} or not parts.hostname:
+        raise ValueError("invalid_source_url")
+    if parts.username or parts.password:
+        raise ValueError("credentials_not_allowed_in_source_url")
+
+    host = parts.hostname.lower()
+    if parts.port is not None:
+        default_port = (scheme == "http" and parts.port == 80) or (
+            scheme == "https" and parts.port == 443
+        )
+        if not default_port:
+            host = f"{host}:{parts.port}"
+
+    path = re.sub(r"/+$", "", parts.path or "/") or "/"
+    return urlunsplit((scheme, host, path, "", ""))
 
 
 def normalized_title(title: str) -> str:
