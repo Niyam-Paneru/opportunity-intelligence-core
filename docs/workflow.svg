@@ -1,35 +1,82 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-labelledby="t d">
-<title id="t">Opportunity intelligence architecture</title><desc id="d">Public opportunity evidence is normalized, hard-gated, scored, turned into a proof plan, and sent to human review.</desc>
-<rect width="1200" height="560" fill="#f5f5f1"/>
-<text x="56" y="62" fill="#71716a" font-family="Arial,sans-serif" font-size="13" letter-spacing="3">OPPORTUNITY INTELLIGENCE</text>
-<text x="56" y="105" fill="#171714" font-family="Georgia,serif" font-size="34">Score attention, not destiny.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 720" role="img" aria-labelledby="title desc">
+  <title id="title">Opportunity triage decision flow</title>
+  <desc id="desc">Public opportunity evidence is normalized, hard rejects bypass scoring, eligible opportunities receive an additive heuristic score and decision band, and higher-priority cases receive a reversible proof plan before human review.</desc>
+  <rect width="1240" height="720" fill="#ffffff"/>
+  <style>
+    .label{font:600 13px Arial,sans-serif;letter-spacing:1.4px;fill:#5b6470}
+    .title{font:700 22px Arial,sans-serif;fill:#111827}
+    .body{font:15px Arial,sans-serif;fill:#374151}
+    .small{font:13px Arial,sans-serif;fill:#4b5563}
+    .box{fill:#ffffff;stroke:#111827;stroke-width:2}
+    .soft{fill:#f8fafc;stroke:#64748b;stroke-width:2}
+    .reject{fill:#fff7f7;stroke:#b42318;stroke-width:2}
+    .proof{fill:#f6f8ef;stroke:#52672f;stroke-width:2}
+    .arrow{stroke:#111827;stroke-width:2.2;fill:none;marker-end:url(#arrow)}
+    .rejectArrow{stroke:#b42318;stroke-width:2.2;fill:none;marker-end:url(#arrowRed)}
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#111827"/></marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#b42318"/></marker>
+  </defs>
 
-<rect x="58" y="160" width="180" height="95" rx="14" fill="#fff" stroke="#171714" stroke-width="2"/>
-<text x="80" y="191" fill="#71716a" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">PUBLIC EVIDENCE</text>
-<text x="80" y="223" fill="#171714" font-family="Arial,sans-serif" font-size="20" font-weight="700">opportunity</text>
+  <text x="60" y="52" class="label">OPPORTUNITY INTELLIGENCE CORE</text>
+  <text x="60" y="84" class="title">Triage flow: hard rejects never reach scoring</text>
 
-<rect x="300" y="135" width="210" height="145" rx="16" fill="#fff" stroke="#171714" stroke-width="2"/>
-<text x="325" y="168" fill="#71716a" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">CLEANUP</text>
-<text x="325" y="200" fill="#171714" font-family="Georgia,serif" font-size="23">Normalize + dedupe</text>
-<text x="325" y="238" fill="#4e4e48" font-family="Arial,sans-serif" font-size="14">same source?</text>
-<text x="325" y="262" fill="#4e4e48" font-family="Arial,sans-serif" font-size="14">same problem?</text>
+  <rect x="60" y="130" width="190" height="92" rx="8" class="box"/>
+  <text x="82" y="160" class="label">INPUT</text>
+  <text x="82" y="190" class="title">Public opportunity</text>
 
-<rect x="580" y="135" width="210" height="145" rx="16" fill="#fff" stroke="#171714" stroke-width="2"/>
-<text x="605" y="168" fill="#71716a" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">HARD GATES</text>
-<text x="605" y="200" fill="#171714" font-family="Georgia,serif" font-size="23">Eligible at all?</text>
-<text x="605" y="238" fill="#a4243b" font-family="Arial,sans-serif" font-size="14">expired / unsafe / blocked</text>
+  <rect x="310" y="120" width="230" height="112" rx="8" class="soft"/>
+  <text x="332" y="150" class="label">IDENTITY</text>
+  <text x="332" y="180" class="title">Normalize + key</text>
+  <text x="332" y="205" class="small">canonical URL + normalized title</text>
+  <text x="332" y="224" class="small">caller can suppress exact duplicates</text>
 
-<rect x="860" y="135" width="275" height="145" rx="16" fill="#e4edb0" stroke="#596e35" stroke-width="2"/>
-<text x="885" y="168" fill="#596e35" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">TRIAGE</text>
-<text x="885" y="200" fill="#171714" font-family="Georgia,serif" font-size="23">Score → proof plan</text>
-<text x="885" y="238" fill="#4e4e48" font-family="Arial,sans-serif" font-size="14">evidence strength</text>
-<text x="1000" y="238" fill="#4e4e48" font-family="Arial,sans-serif" font-size="14">proofability</text>
-<text x="885" y="262" fill="#4e4e48" font-family="Arial,sans-serif" font-size="14">human review last</text>
+  <polygon points="660,118 770,176 660,234 550,176" class="box"/>
+  <text x="660" y="164" text-anchor="middle" class="label">HARD GATES</text>
+  <text x="660" y="190" text-anchor="middle" class="body">eligible?</text>
 
-<g stroke="#171714" stroke-width="2" fill="none"><path d="M238 207 H300"/><path d="M510 207 H580"/><path d="M790 207 H860"/></g>
-<g fill="#171714"><path d="M292 201 l10 6 -10 6z"/><path d="M572 201 l10 6 -10 6z"/><path d="M852 201 l10 6 -10 6z"/></g>
+  <rect x="880" y="122" width="290" height="108" rx="8" class="soft"/>
+  <text x="902" y="152" class="label">HEURISTIC SCORE</text>
+  <text x="902" y="181" class="title">Add named evidence</text>
+  <text x="902" y="205" class="small">22 / 16 / 12 / ... are policy weights</text>
+  <text x="902" y="224" class="small">not probability or confidence</text>
 
-<rect x="580" y="350" width="555" height="90" rx="14" fill="#f1d9dc" stroke="#a4243b" stroke-width="2"/>
-<text x="605" y="382" fill="#a4243b" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">IMPORTANT</text>
-<text x="605" y="412" fill="#171714" font-family="Georgia,serif" font-size="20">A high score means “look here first.” It is not a sales probability.</text>
+  <rect x="470" y="326" width="310" height="122" rx="8" class="reject"/>
+  <text x="492" y="357" class="label" style="fill:#b42318">REJECT PATH</text>
+  <text x="492" y="388" class="title">Return reject immediately</text>
+  <text x="492" y="415" class="body">expired / unsafe / remote blocked /</text>
+  <text x="492" y="438" class="body">geography ineligible</text>
+
+  <rect x="880" y="300" width="290" height="170" rx="8" class="box"/>
+  <text x="902" y="330" class="label">DECISION BANDS</text>
+  <text x="902" y="360" class="body">75–100  → prepare_proof</text>
+  <text x="902" y="388" class="body">55–74    → verify_then_prepare</text>
+  <text x="902" y="416" class="body">35–54    → research</text>
+  <text x="902" y="444" class="body">0–34      → deprioritize</text>
+
+  <rect x="800" y="548" width="250" height="102" rx="8" class="proof"/>
+  <text x="822" y="578" class="label" style="fill:#52672f">HIGHER-PRIORITY ONLY</text>
+  <text x="822" y="608" class="title">Small reversible proof</text>
+  <text x="822" y="633" class="small">before/after evidence when possible</text>
+
+  <rect x="1068" y="548" width="150" height="102" rx="8" class="box"/>
+  <text x="1088" y="578" class="label">BOUNDARY</text>
+  <text x="1088" y="608" class="title">Human review</text>
+  <text x="1088" y="633" class="small">before contact</text>
+
+  <path d="M250 176 H310" class="arrow"/>
+  <path d="M540 176 H550" class="arrow"/>
+  <path d="M770 176 H880" class="arrow"/>
+  <text x="811" y="162" class="label">YES</text>
+
+  <path d="M660 234 V326" class="rejectArrow"/>
+  <text x="674" y="286" class="label" style="fill:#b42318">NO → SKIP SCORE</text>
+
+  <path d="M1025 230 V300" class="arrow"/>
+  <path d="M1025 470 V510 H925 V548" class="arrow"/>
+  <text x="936" y="500" class="small">prepare / verify-then-prepare</text>
+  <path d="M1050 599 H1068" class="arrow"/>
+
+  <text x="60" y="690" class="small">Research/deprioritize bands do not create a proof plan. This core never sends outreach.</text>
 </svg>

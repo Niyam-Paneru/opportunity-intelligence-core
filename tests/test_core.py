@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from opportunity_intelligence import Opportunity, assess, duplicate_key
 
@@ -43,6 +44,21 @@ class OpportunityPipelineTests(unittest.TestCase):
         self.assertEqual(result.score, 0)
         self.assertEqual(result.decision, "reject")
         self.assertIn("expired", result.reasons)
+
+    def test_hard_rejection_bypasses_scoring(self):
+        opportunity = Opportunity(
+            title="Ineligible work",
+            source_url="https://example.test/request/100",
+            explicit_paid_intent=True,
+            technical_fit=True,
+            expired=True,
+        )
+
+        with patch("opportunity_intelligence.core.score", side_effect=AssertionError("score_called")):
+            result = assess(opportunity)
+
+        self.assertEqual(result.decision, "reject")
+        self.assertEqual(result.score, 0)
 
     def test_tracking_noise_does_not_create_a_new_opportunity_identity(self):
         a = Opportunity(
