@@ -8,7 +8,7 @@ This is the public decision core extracted from private acquisition tooling. It 
 
 ## How the flow works
 
-1. **Optional caller-side identity cleanup.** `canonical_url()` removes tracking noise and `duplicate_key()` combines the canonical URL with a normalized title. These helpers are **not called by `assess()`**; callers may use them to suppress repeated identities before assessment.
+1. **Optional caller-side identity cleanup.** `canonical_url()` removes known tracking parameters and URL fragments while preserving other query parameters that may identify a distinct opportunity. `duplicate_key()` combines that canonical URL with a normalized title. These helpers are **not called by `assess()`**; callers may use them to suppress repeated identities before assessment.
 2. **Run hard gates first.** Dangerous/regulated scope, expiry, remote ineligibility, or geography ineligibility returns `decision="reject"` immediately. `score()` is not called.
 3. **Score eligible rows.** `scoring.py` adds named positive evidence and subtracts named penalties. Every contribution is returned in `reasons`.
 4. **Map the score to a decision band.** The score controls attention, not predicted outcomes.
@@ -32,12 +32,12 @@ The public repository contains no dataset, calibration report, controlled experi
 
 | File | What to verify |
 |---|---|
-| `normalization.py` | canonical URL and deterministic duplicate identity |
+| `normalization.py` | conservative URL canonicalization and deterministic duplicate identity |
 | `gates.py` | hard rejection conditions |
 | `scoring.py` | visible additive heuristic and decision bands |
 | `planning.py` | small proof plan ending in human review |
 | `core.py` | hard gates return before scoring |
-| `tests/` | strong opportunity, hard reject, duplicate identity, bands, planning |
+| `tests/` | strong opportunity, hard reject, query-safe duplicate identity, bands, planning |
 
 ## Run the proof
 
