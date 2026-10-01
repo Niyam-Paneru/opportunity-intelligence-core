@@ -4,13 +4,13 @@
 
 Some conditions should not be “minus 30 points.” `assess()` evaluates hard gates first and returns `reject` immediately when any are present. The scoring function is bypassed.
 
-## Duplicate identity is explicit
+## Duplicate identity is explicit and conservative
 
-`duplicate_key()` canonicalizes the source URL and normalizes the title so callers can suppress repeated identities before assessment. This public core exposes the identity rule; it does not include the private discovery/storage layer that applies it across a lead set.
+`duplicate_key()` canonicalizes the source URL and normalizes the title so callers can suppress repeated identities before assessment. Canonicalization removes known tracking parameters and fragments, but preserves other query parameters because they may identify different opportunities. The public core exposes the identity rule; it does not include the private discovery/storage layer that applies it across a lead set.
 
 ## Scores are additive and inspectable
 
-Every point has a named source in `reasons`. The current weights are configuration-style heuristic constants for prioritization. They are not learned parameters and no public calibration evidence justifies reading them as probabilities or confidence.
+Every point has a named source in `reasons`. The current weights are explicit default heuristic constants for prioritization. They are not learned parameters and no public calibration evidence justifies reading them as probabilities or confidence.
 
 ## Decision bands are policy, not prediction
 
