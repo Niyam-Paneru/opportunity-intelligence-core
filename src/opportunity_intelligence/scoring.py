@@ -3,7 +3,7 @@ from __future__ import annotations
 from .models import Opportunity
 
 
-# Configurable prioritization heuristics, not calibrated probabilities or confidence.
+# Explicit default prioritization policy, not calibrated probability or model confidence.
 # Changing these constants changes triage policy; it does not improve predictive accuracy.
 POSITIVE_COMPONENTS = (
     ("explicit_paid_intent", 22),
