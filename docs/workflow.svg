@@ -22,19 +22,19 @@
   <text x="60" y="52" class="label">OPPORTUNITY INTELLIGENCE CORE</text>
   <text x="60" y="84" class="title">Triage flow: hard rejects never reach scoring</text>
 
-  <rect x="60" y="130" width="190" height="92" rx="8" class="box"/>
+  <rect x="60" y="130" width="220" height="92" rx="8" class="box"/>
   <text x="82" y="160" class="label">INPUT</text>
-  <text x="82" y="190" class="title">Public opportunity</text>
+  <text x="82" y="190" class="title" style="font-size:20px">Public opportunity</text>
 
-  <rect x="310" y="120" width="230" height="112" rx="8" class="soft"/>
-  <text x="332" y="150" class="label">IDENTITY</text>
-  <text x="332" y="180" class="title">Normalize + key</text>
-  <text x="332" y="205" class="small">canonical URL + normalized title</text>
-  <text x="332" y="224" class="small">caller can suppress exact duplicates</text>
+  <rect x="340" y="120" width="250" height="112" rx="8" class="soft"/>
+  <text x="362" y="150" class="label">IDENTITY</text>
+  <text x="362" y="180" class="title">Normalize + key</text>
+  <text x="362" y="205" class="small">canonical URL + normalized title</text>
+  <text x="362" y="224" class="small">caller can suppress exact duplicates</text>
 
-  <polygon points="660,118 770,176 660,234 550,176" class="box"/>
-  <text x="660" y="164" text-anchor="middle" class="label">HARD GATES</text>
-  <text x="660" y="190" text-anchor="middle" class="body">eligible?</text>
+  <polygon points="700,118 810,176 700,234 590,176" class="box"/>
+  <text x="700" y="164" text-anchor="middle" class="label">HARD GATES</text>
+  <text x="700" y="190" text-anchor="middle" class="body">eligible?</text>
 
   <rect x="880" y="122" width="290" height="108" rx="8" class="soft"/>
   <text x="902" y="152" class="label">HEURISTIC SCORE</text>
@@ -42,11 +42,11 @@
   <text x="902" y="205" class="small">22 / 16 / 12 / ... are policy weights</text>
   <text x="902" y="224" class="small">not probability or confidence</text>
 
-  <rect x="470" y="326" width="310" height="122" rx="8" class="reject"/>
-  <text x="492" y="357" class="label" style="fill:#b42318">REJECT PATH</text>
-  <text x="492" y="388" class="title">Return reject immediately</text>
-  <text x="492" y="415" class="body">expired / unsafe / remote blocked /</text>
-  <text x="492" y="438" class="body">geography ineligible</text>
+  <rect x="500" y="326" width="330" height="122" rx="8" class="reject"/>
+  <text x="522" y="357" class="label" style="fill:#b42318">REJECT PATH</text>
+  <text x="522" y="388" class="title">Return reject immediately</text>
+  <text x="522" y="415" class="body">expired / unsafe / remote blocked /</text>
+  <text x="522" y="438" class="body">geography ineligible</text>
 
   <rect x="880" y="300" width="290" height="170" rx="8" class="box"/>
   <text x="902" y="330" class="label">DECISION BANDS</text>
@@ -55,28 +55,28 @@
   <text x="902" y="416" class="body">35–54    → research</text>
   <text x="902" y="444" class="body">0–34      → deprioritize</text>
 
-  <rect x="800" y="548" width="250" height="102" rx="8" class="proof"/>
-  <text x="822" y="578" class="label" style="fill:#52672f">HIGHER-PRIORITY ONLY</text>
-  <text x="822" y="608" class="title">Small reversible proof</text>
-  <text x="822" y="633" class="small">before/after evidence when possible</text>
+  <rect x="740" y="548" width="270" height="102" rx="8" class="proof"/>
+  <text x="762" y="578" class="label" style="fill:#52672f">HIGHER-PRIORITY ONLY</text>
+  <text x="762" y="608" class="title" style="font-size:20px">Small reversible proof</text>
+  <text x="762" y="633" class="small">before/after evidence when possible</text>
 
-  <rect x="1068" y="548" width="150" height="102" rx="8" class="box"/>
-  <text x="1088" y="578" class="label">BOUNDARY</text>
-  <text x="1088" y="608" class="title">Human review</text>
-  <text x="1088" y="633" class="small">before contact</text>
+  <rect x="1035" y="548" width="185" height="102" rx="8" class="box"/>
+  <text x="1055" y="578" class="label">BOUNDARY</text>
+  <text x="1055" y="608" class="title" style="font-size:20px">Human review</text>
+  <text x="1055" y="633" class="small">before contact</text>
 
-  <path d="M250 176 H310" class="arrow"/>
-  <path d="M540 176 H550" class="arrow"/>
-  <path d="M770 176 H880" class="arrow"/>
-  <text x="811" y="162" class="label">YES</text>
+  <path d="M280 176 H340" class="arrow"/>
+  <path d="M580 176 H590" class="arrow"/>
+  <path d="M810 176 H880" class="arrow"/>
+  <text x="840" y="162" class="label">YES</text>
 
-  <path d="M660 234 V326" class="rejectArrow"/>
-  <text x="674" y="286" class="label" style="fill:#b42318">NO → SKIP SCORE</text>
+  <path d="M700 234 V326" class="rejectArrow"/>
+  <text x="714" y="286" class="label" style="fill:#b42318">NO → SKIP SCORE</text>
 
   <path d="M1025 230 V300" class="arrow"/>
-  <path d="M1025 470 V510 H925 V548" class="arrow"/>
-  <text x="936" y="500" class="small">prepare / verify-then-prepare</text>
-  <path d="M1050 599 H1068" class="arrow"/>
+  <path d="M1025 470 V510 H875 V548" class="arrow"/>
+  <text x="896" y="500" class="small">prepare / verify-then-prepare</text>
+  <path d="M1010 599 H1035" class="arrow"/>
 
   <text x="60" y="690" class="small">Research/deprioritize bands do not create a proof plan. This core never sends outreach.</text>
 </svg>
