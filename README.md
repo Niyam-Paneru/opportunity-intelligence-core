@@ -35,4 +35,6 @@ Some conditions are stronger than a score and become hard rejects instead.
 
 The private systems add discovery, evidence collection, operator review, and real outcome tracking. This repo keeps the part that can be reviewed without private contact data or account access.
 
+Want to challenge the rubric? Read the [invariants](docs/invariants.md), [failure modes](docs/failure-modes.md), [design decisions](docs/decisions.md), and [provenance](PROVENANCE.md).
+
 > A high score means “look here first,” not “start spending the imaginary commission.”
