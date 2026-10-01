@@ -27,10 +27,10 @@
   <text x="82" y="190" class="title" style="font-size:20px">Public opportunity</text>
 
   <rect x="340" y="120" width="250" height="112" rx="8" class="soft"/>
-  <text x="362" y="150" class="label">IDENTITY</text>
-  <text x="362" y="180" class="title">Normalize + key</text>
+  <text x="362" y="150" class="label">IDENTITY HELPER</text>
+  <text x="362" y="180" class="title">Optional caller-side normalize + key</text>
   <text x="362" y="205" class="small">canonical URL + normalized title</text>
-  <text x="362" y="224" class="small">caller can suppress exact duplicates</text>
+  <text x="362" y="224" class="small">not invoked by assess(); caller may suppress duplicates</text>
 
   <polygon points="700,118 810,176 700,234 590,176" class="box"/>
   <text x="700" y="164" text-anchor="middle" class="label">HARD GATES</text>
