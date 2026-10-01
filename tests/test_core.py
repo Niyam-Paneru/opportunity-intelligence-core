@@ -63,11 +63,35 @@ class OpportunityPipelineTests(unittest.TestCase):
     def test_tracking_noise_does_not_create_a_new_opportunity_identity(self):
         a = Opportunity(
             "Need API fix",
-            "https://example.test/request/42?utm_source=one#details",
+            "https://example.test/request/42?utm_source=one&fbclid=abc#details",
         )
         b = Opportunity(
             "need   api-fix!",
             "https://example.test/request/42/",
+        )
+
+        self.assertEqual(duplicate_key(a), duplicate_key(b))
+
+    def test_identity_bearing_query_parameters_are_preserved(self):
+        a = Opportunity(
+            "Need API fix",
+            "https://example.test/request?id=42",
+        )
+        b = Opportunity(
+            "Need API fix",
+            "https://example.test/request?id=43",
+        )
+
+        self.assertNotEqual(duplicate_key(a), duplicate_key(b))
+
+    def test_non_tracking_query_order_is_canonicalized(self):
+        a = Opportunity(
+            "Need API fix",
+            "https://example.test/request?lang=en&id=42&utm_campaign=x",
+        )
+        b = Opportunity(
+            "need api fix",
+            "https://example.test/request?id=42&lang=en",
         )
 
         self.assertEqual(duplicate_key(a), duplicate_key(b))
