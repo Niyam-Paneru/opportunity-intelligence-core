@@ -2,34 +2,45 @@
 
 Deterministic triage for public opportunities: reject ineligible work before scoring, apply a transparent heuristic policy, and stop higher-priority cases at human review before any contact.
 
-This is the public decision core extracted from private acquisition tooling. It contains no discovery accounts, contact data, proposal submission, messaging, or payment behavior.
+**Hard rejects do not get consolation points.**
+
+This public sample comes from my private acquisition tooling. It makes the triage policy inspectable; I can adapt the rubric and build the surrounding discovery, review, and application workflows. Account access, contact data, submissions, messaging, and payment behavior stay outside this sample.
+
+## Eligibility: reject before spending effort on a score
+
+Dangerous or regulated scope, expiry, remote ineligibility, or geography ineligibility triggers rejection. `assess()` returns before calling `score()`.
 
 ```mermaid
 flowchart LR
-    O["Public opportunity"]
-    N["Optional caller-side identity cleanup<br/>canonical_url() + duplicate_key()"]
-    A["assess()"]
-    G{"Hard rejection reasons?"}
-    R["REJECT<br/>score = 0<br/>score() is bypassed"]
-    S["Heuristic policy score<br/>named additive evidence<br/>not probability / confidence"]
-    B{"Decision band"}
-    P["Small reversible proof"]
-    H["human_review_before_contact"]
-    X["research / deprioritize<br/>no proof plan"]
-
-    O -. "optional" .-> N
-    N -. "caller may dedupe first" .-> A
-    O --> A
-    A --> G
-    G -- "yes" --> R
-    G -- "no" --> S
-    S --> B
-    B -- "prepare_proof / verify_then_prepare" --> P
-    P --> H
-    B -- "research / deprioritize" --> X
+    O["<b>assess opportunity</b>"] --> G{"Hard reject?"}
+    G -- Yes --> R["<b>Reject</b><br/>Score 0, scoring bypassed"]
+    G -- No --> S["<b>Heuristic score</b><br/>Named reasons"]
+    classDef input fill:#e8e6df,stroke:#55534a,color:#20201d,stroke-width:2px;
+    classDef pass fill:#d2e5d8,stroke:#38734d,color:#183923,stroke-width:2px;
+    classDef stop fill:#f4dadd,stroke:#b14253,color:#611c29,stroke-width:2px;
+    class O,G,S input;
+    class R stop;
 ```
 
-The dotted identity path is optional caller-side work: `assess()` does not call `canonical_url()` or `duplicate_key()`. Hard rejects do not get consolation points; `assess()` returns before `score()`.
+Identity cleanup is optional caller-side work: `assess()` does not call `canonical_url()` or `duplicate_key()`.
+
+## Priority: prepare evidence, then stop for review
+
+Only `prepare_proof` and `verify_then_prepare` produce a proof plan. Its final step is `human_review_before_contact`; the module performs no contact. Lower bands return no proof plan.
+
+```mermaid
+flowchart LR
+    S["<b>Heuristic score</b>"] --> B{"Proof band?"}
+    B -- Yes --> P["<b>Small proof plan</b>"]
+    P --> H["<b>Human review</b><br/>Before contact"]
+    B -- No --> X["<b>Research / deprioritize</b><br/>No proof plan"]
+    classDef input fill:#e8e6df,stroke:#55534a,color:#20201d,stroke-width:2px;
+    classDef pass fill:#d2e5d8,stroke:#38734d,color:#183923,stroke-width:2px;
+    classDef stop fill:#f4dadd,stroke:#b14253,color:#611c29,stroke-width:2px;
+    class S,B,X input;
+    class P pass;
+    class H stop;
+```
 
 ## How the flow works
 
