@@ -84,6 +84,18 @@ class OpportunityPipelineTests(unittest.TestCase):
 
         self.assertNotEqual(duplicate_key(a), duplicate_key(b))
 
+    def test_repeated_query_value_order_is_preserved(self):
+        a = Opportunity(
+            "Need API fix",
+            "https://example.test/request?id=42&id=43&lang=en",
+        )
+        b = Opportunity(
+            "Need API fix",
+            "https://example.test/request?id=43&id=42&lang=en",
+        )
+
+        self.assertNotEqual(duplicate_key(a), duplicate_key(b))
+
     def test_non_tracking_query_order_is_canonicalized(self):
         a = Opportunity(
             "Need API fix",
