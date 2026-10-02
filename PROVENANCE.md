@@ -1,19 +1,22 @@
 # Provenance
 
-This public triage module was rewritten from deterministic scoring and review boundaries in private acquisition tooling.
+This public triage module was rewritten from deterministic scoring and review boundaries in private acquisition tooling. Private lead/contact data, account access, messaging, proposal submission, and payment behavior are intentionally excluded.
 
-## Preserved
+## What the public history supports
 
-- canonicalization/deduplication;
-- hard rejection gates;
-- named score components;
-- proof planning;
+The current numeric weights were already present in the earlier monolithic implementation at commit `e8cd82301119a45a370969cca05b4bcf4b9fd2be`. Commit `b012bc11cd740182f613b254cad38a742800b342` later split that logic into `scoring.py` without adding calibration evidence.
+
+The public repository contains no dataset, calibration report, experiment, or outcome history that derives the exact `22/16/12/...` values. They are therefore documented as **explicit default policy weights used for prioritization**, not empirically calibrated outcome likelihood. They can be changed by editing the policy constants in code; this repository does not expose or claim a learned/runtime calibration system.
+
+## Preserved behavior
+
+- canonicalization and deterministic duplicate identity;
+- hard rejection gates before scoring;
+- named additive score contributions;
+- explicit score-to-decision bands;
+- small reversible proof planning;
 - human review before contact.
-
-## Rewritten for public review
-
-No marketplace login, prospect database, private contact details, email account, scraping bypass, proposal submission, or payment action is included.
 
 ## Claim boundary
 
-The score ranks attention under a visible rubric. It is not a conversion probability and it does not prove client acquisition.
+The score ranks attention under a visible rubric. It does not estimate probability of sale, model confidence, predictive accuracy, or client acquisition performance.

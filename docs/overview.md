@@ -1,17 +1,17 @@
 # Design overview
 
-This repository is not a “lead score = probability of sale” machine.
+This repository is a deterministic triage layer for public opportunities, not a predictive sales model.
 
-It is a deterministic triage layer for public opportunities.
+The intended control flow is:
 
-The public slice separates five concerns:
+1. canonicalize the source URL and derive a duplicate identity;
+2. let the caller suppress repeated identities;
+3. run hard eligibility gates;
+4. if any hard gate fails, return `reject` immediately and **skip scoring**;
+5. otherwise apply the additive heuristic and map it to an explicit decision band;
+6. only the two higher-priority bands create a small reversible proof plan;
+7. every proof plan ends at human review before contact.
 
-- normalization and deduplication;
-- hard rejection gates;
-- evidence scoring;
-- score-to-decision mapping;
-- a small proof plan that still ends in human review.
+The score answers one narrow question: **where should attention go first under the current rubric?** It does not answer “how likely is this opportunity to close?”
 
-A score says **where to spend attention**, not “this person will buy.”
-
-The private systems add discovery, evidence collection, operator review, and outcome tracking. Those operational parts stay out of this public proof.
+See `PROVENANCE.md` for why the current numeric weights must be treated as configurable heuristics rather than empirically calibrated likelihoods.

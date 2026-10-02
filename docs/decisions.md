@@ -2,18 +2,20 @@
 
 ## Hard rejection is separate from scoring
 
-Some conditions should not be “minus 30 points.” They should stop the opportunity entirely.
+Some conditions should not be “minus 30 points.” `assess()` evaluates hard gates first and returns `reject` immediately when any are present. The scoring function is bypassed.
+
+## Duplicate identity is explicit and conservative
+
+`duplicate_key()` canonicalizes the source URL and normalizes the title so callers can suppress repeated identities before assessment. Canonicalization removes known tracking parameters and fragments, but preserves other query parameters because they may identify different opportunities. The public core exposes the identity rule; it does not include the private discovery/storage layer that applies it across a lead set.
 
 ## Scores are additive and inspectable
 
-Every point has a named source. No hidden model confidence is allowed to become fake precision.
+Every point has a named source in `reasons`. The current weights are explicit default heuristic constants for prioritization. They are not learned parameters and no public calibration evidence justifies reading them as probabilities or confidence.
 
-## No probability label
+## Decision bands are policy, not prediction
 
-A score of 80 does not mean an 80% chance of closing. It means the configured evidence is stronger than lower-scoring rows under this rubric.
+`75+` prepares proof, `55–74` verifies then prepares, `35–54` researches, and lower scores are deprioritized. These thresholds encode triage policy under the current rubric; they are not validated outcome cutoffs.
 
-## Proof before pitch
+## Proof before contact
 
-Higher-priority opportunities get a small reversible proof plan before any human decides whether contact is worth it.
-
-> A spreadsheet row wearing a tie is still a spreadsheet row.
+Higher-priority opportunities get a small reversible proof plan. The final step remains `human_review_before_contact`; this repository contains no outreach or sending behavior.

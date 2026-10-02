@@ -1,9 +1,26 @@
 from __future__ import annotations
 
 import re
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .models import Opportunity
+
+
+_TRACKING_QUERY_KEYS = frozenset(
+    {
+        "utm",
+        "gclid",
+        "fbclid",
+        "msclkid",
+        "mc_cid",
+        "mc_eid",
+    }
+)
+
+
+def _is_tracking_query_key(key: str) -> bool:
+    normalized = key.lower()
+    return normalized in _TRACKING_QUERY_KEYS or normalized.startswith("utm_")
 
 
 def canonical_url(url: str) -> str:
@@ -24,7 +41,17 @@ def canonical_url(url: str) -> str:
             host = f"{host}:{parts.port}"
 
     path = re.sub(r"/+$", "", parts.path or "/") or "/"
-    return urlunsplit((scheme, host, path, "", ""))
+
+    kept_query = [
+        (key, value)
+        for key, value in parse_qsl(parts.query, keep_blank_values=True)
+        if not _is_tracking_query_key(key)
+    ]
+    # Repeated-key value order can identify different sources (e.g. last ID wins).
+    query = urlencode(sorted(kept_query, key=lambda pair: pair[0]), doseq=True)
+
+    # Fragments are client-side navigation state and do not identify the source.
+    return urlunsplit((scheme, host, path, query, ""))
 
 
 def normalized_title(title: str) -> str:

@@ -1,51 +1,49 @@
 # Opportunity Intelligence Core
 
-**A lead is not a client. A reply is not revenue. A spreadsheet row wearing a tie is still a spreadsheet row.**
+Deterministic triage for public opportunities: normalize identity, reject ineligible work before scoring, apply a transparent additive heuristic, and stop at human review before any contact.
 
-This is the public scoring/triage slice from my private acquisition systems.
+This is the public decision core extracted from private acquisition tooling. It contains no discovery accounts, contact data, proposal submission, messaging, or payment behavior.
 
-It does **not** send outreach. It decides which public opportunities deserve more investigation, which should be rejected immediately, and which are worth building a small proof for before a human chooses what to do next.
+![Opportunity triage decision flow](docs/workflow.svg)
 
-![Opportunity workflow](docs/workflow.svg)
+## How the flow works
+
+1. **Optional caller-side identity cleanup.** `canonical_url()` removes known tracking parameters and URL fragments while preserving other query parameters that may identify a distinct opportunity. `duplicate_key()` combines that canonical URL with a normalized title. These helpers are **not called by `assess()`**; callers may use them to suppress repeated identities before assessment.
+2. **Run hard gates first.** Dangerous/regulated scope, expiry, remote ineligibility, or geography ineligibility returns `decision="reject"` immediately. `score()` is not called.
+3. **Score eligible rows.** `scoring.py` adds named positive evidence and subtracts named penalties. Every contribution is returned in `reasons`.
+4. **Map the score to a decision band.** The score controls attention, not predicted outcomes.
+5. **Prepare a small proof only for higher-priority bands.** The plan is reversible and ends with `human_review_before_contact`.
 
 ## What the score means
 
-Not probability.
+The exact `22/16/12/...` values are **explicit default policy weights defined in code for prioritization**. They are not learned parameters, probabilities, confidence scores, or calibrated estimates of conversion likelihood. Changing those constants changes the triage policy; it does not make the score more predictive.
 
-Not “AI confidence.”
+The public repository contains no dataset, calibration report, controlled experiment, or outcome history that empirically derives those exact values. Treat a higher score only as “inspect this first under the current rubric.” See [PROVENANCE.md](PROVENANCE.md) for the code-history evidence behind that claim.
 
-Not “83% chance this person buys.”
+| Score / gate | Decision | Next step |
+|---|---|---|
+| Any hard reject | `reject` | Stop; scoring is bypassed |
+| 75–100 | `prepare_proof` | Build a small reversible proof, then human review |
+| 55–74 | `verify_then_prepare` | Verify missing evidence, then prepare proof |
+| 35–54 | `research` | Gather evidence; no proof plan |
+| 0–34 | `deprioritize` | Spend attention elsewhere |
 
-The score is just an inspectable attention rubric built from explicit evidence such as paid intent, fit, urgency, freshness, and proofability.
+## Inspect the implementation
 
-Some conditions are stronger than a score and become hard rejects instead.
-
-## Repo map
-
-| Area | Responsibility |
+| File | What to verify |
 |---|---|
-| `models.py` | opportunity + assessment records |
-| `normalization.py` | canonical URLs and duplicate keys |
+| `normalization.py` | conservative URL canonicalization and deterministic duplicate identity |
 | `gates.py` | hard rejection conditions |
-| `scoring.py` | additive evidence rubric |
-| `planning.py` | small reversible proof plan |
-| `core.py` | assessment facade |
-| `tests/` | normalization, gates, score, planning |
-| `docs/` | design reasoning |
+| `scoring.py` | visible additive heuristic and decision bands |
+| `planning.py` | small proof plan ending in human review |
+| `core.py` | hard gates return before scoring |
+| `tests/` | strong opportunity, hard reject, query-safe duplicate identity, bands, planning |
 
-The private systems add discovery, evidence collection, operator review, and real outcome tracking. This repo keeps the part that can be reviewed without private contact data or account access.
+## Run the proof
 
-Want to challenge the rubric? Read the [invariants](docs/invariants.md), [failure modes](docs/failure-modes.md), [design decisions](docs/decisions.md), and [provenance](PROVENANCE.md).
+```bash
+python -m compileall -q src
+PYTHONPATH=src python -m unittest discover -s tests
+```
 
-> A high score means “look here first,” not “start spending the imaginary commission.”
-
-## Inspect deeper
-
-- [Design overview](docs/overview.md)
-- [Why the design looks this way](docs/decisions.md)
-- [Invariants that must survive refactors](docs/invariants.md)
-- [How it fails on purpose](docs/failure-modes.md)
-- [Security / privacy boundary](SECURITY.md)
-- [Where this public slice came from](PROVENANCE.md)
-
-The README is the front door. The interesting arguments are in those files.
+The repository proves deterministic triage behavior only. It does **not** claim predictive accuracy, production conversion performance, or automatic outreach.

@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from opportunity_intelligence import Opportunity, assess, duplicate_key
 
@@ -44,14 +45,53 @@ class OpportunityPipelineTests(unittest.TestCase):
         self.assertEqual(result.decision, "reject")
         self.assertIn("expired", result.reasons)
 
+    def test_hard_rejection_bypasses_scoring(self):
+        opportunity = Opportunity(
+            title="Ineligible work",
+            source_url="https://example.test/request/100",
+            explicit_paid_intent=True,
+            technical_fit=True,
+            expired=True,
+        )
+
+        with patch("opportunity_intelligence.core.score", side_effect=AssertionError("score_called")):
+            result = assess(opportunity)
+
+        self.assertEqual(result.decision, "reject")
+        self.assertEqual(result.score, 0)
+
     def test_tracking_noise_does_not_create_a_new_opportunity_identity(self):
         a = Opportunity(
             "Need API fix",
-            "https://example.test/request/42?utm_source=one#details",
+            "https://example.test/request/42?utm_source=one&fbclid=abc#details",
         )
         b = Opportunity(
             "need   api-fix!",
             "https://example.test/request/42/",
+        )
+
+        self.assertEqual(duplicate_key(a), duplicate_key(b))
+
+    def test_identity_bearing_query_parameters_are_preserved(self):
+        a = Opportunity(
+            "Need API fix",
+            "https://example.test/request?id=42",
+        )
+        b = Opportunity(
+            "Need API fix",
+            "https://example.test/request?id=43",
+        )
+
+        self.assertNotEqual(duplicate_key(a), duplicate_key(b))
+
+    def test_non_tracking_query_order_is_canonicalized(self):
+        a = Opportunity(
+            "Need API fix",
+            "https://example.test/request?lang=en&id=42&utm_campaign=x",
+        )
+        b = Opportunity(
+            "need api fix",
+            "https://example.test/request?id=42&lang=en",
         )
 
         self.assertEqual(duplicate_key(a), duplicate_key(b))
