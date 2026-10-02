@@ -68,7 +68,7 @@ The public repository contains no dataset, calibration report, controlled experi
 
 Verification commands and what they prove: [`docs/verification.md`](docs/verification.md).
 
-## Limits and provenance
+## What the score cannot tell you
 
 The repository proves deterministic triage behavior only. It does not claim predictive accuracy, production conversion performance, or automatic outreach.
 
