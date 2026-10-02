@@ -16,6 +16,12 @@ class NormalizationTests(unittest.TestCase):
         b = Opportunity("need api fix", "https://example.test/a/")
         self.assertEqual(duplicate_key(a), duplicate_key(b))
 
+    def test_repeated_identity_parameter_order_is_preserved(self):
+        # A last-value consumer resolves these to different opportunity IDs.
+        a = Opportunity("Need API fix", "https://example.test/request?id=42&id=43")
+        b = Opportunity("Need API fix", "https://example.test/request?id=43&id=42")
+        self.assertNotEqual(duplicate_key(a), duplicate_key(b))
+
     def test_default_https_port_normalizes_away(self):
         self.assertEqual(
             canonical_url("https://Example.COM:443/request/1/"),

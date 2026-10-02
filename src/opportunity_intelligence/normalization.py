@@ -47,7 +47,8 @@ def canonical_url(url: str) -> str:
         for key, value in parse_qsl(parts.query, keep_blank_values=True)
         if not _is_tracking_query_key(key)
     ]
-    query = urlencode(sorted(kept_query), doseq=True)
+    # Repeated-key value order can identify different sources (e.g. last ID wins).
+    query = urlencode(sorted(kept_query, key=lambda pair: pair[0]), doseq=True)
 
     # Fragments are client-side navigation state and do not identify the source.
     return urlunsplit((scheme, host, path, query, ""))
