@@ -42,21 +42,13 @@ flowchart LR
     class H stop;
 ```
 
-## How the flow works
-
-1. **Optional identity cleanup.** `canonical_url()` removes known tracking parameters and URL fragments while preserving other query parameters that can identify a distinct opportunity. `duplicate_key()` combines that URL with a normalized title.
-2. **Hard gates first.** Dangerous or regulated scope, expiry, remote ineligibility, or geography ineligibility returns `decision="reject"` immediately.
-3. **Heuristic policy scoring.** Eligible rows receive named positive contributions and penalties from `scoring.py`; every contribution is returned in `reasons`.
-4. **Decision band.** The score controls triage priority, not predicted outcomes.
-5. **Higher-priority proof planning.** Only `prepare_proof` and `verify_then_prepare` create a small reversible proof plan, which ends at `human_review_before_contact`.
-
-The URL canonicalizer is deliberately conservative: known tracking noise is removed, identity-bearing query parameters are retained, and repeated-key value order is preserved while keys are canonicalized.
+`canonical_url()` removes known tracking parameters and fragments while retaining identity-bearing query parameters. It preserves repeated-key value order while canonicalizing keys. `duplicate_key()` combines the URL with a normalized title.
 
 ## What the score means
 
-The exact `22/16/12/...` values are **explicit default policy weights used for prioritization**. They are not learned parameters, probabilities, confidence scores, or calibrated estimates of conversion likelihood.
+`scoring.py` returns the positive contributions and penalties in `reasons`.
 
-The public repository contains no dataset, calibration report, controlled experiment, or outcome history that empirically derives those exact values. A higher score means only “inspect this first under the current rubric.”
+The `22/16/12/...` weights are **explicit policy choices**, not learned parameters, probabilities, or calibrated conversion estimates. No dataset or outcome study derives them here. A higher score means only “inspect this first under the current rubric.”
 
 | Score / gate | Decision | Next step |
 |---|---|---|
