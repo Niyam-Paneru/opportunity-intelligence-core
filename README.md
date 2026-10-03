@@ -11,13 +11,22 @@ This public sample comes from my private acquisition tooling. It makes the triag
 Dangerous or regulated scope, expiry, remote ineligibility, or geography ineligibility triggers rejection. `assess()` returns before calling `score()`.
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+    nodeSpacing: 28
+    rankSpacing: 42
+---
 flowchart LR
-    O["<b>assess opportunity</b>"] --> G{"Hard reject?"}
-    G -- Yes --> R["<b>Reject</b><br/>Score 0, scoring bypassed"]
-    G -- No --> S["<b>Heuristic score</b><br/>Named reasons"]
-    classDef input fill:#e8e6df,stroke:#55534a,color:#20201d,stroke-width:2px;
-    classDef pass fill:#d2e5d8,stroke:#38734d,color:#183923,stroke-width:2px;
-    classDef stop fill:#f4dadd,stroke:#b14253,color:#611c29,stroke-width:2px;
+    accTitle: Eligibility: reject before spending effort on a score
+    accDescr: Decision flow for eligibility: reject before spending effort on a score.
+    O["assess opportunity"] --> G{"Hard reject?"}
+    G -- Yes --> R["Reject<br/>Score 0, scoring bypassed"]
+    G -- No --> S["Heuristic score<br/>Named reasons"]
+    classDef input stroke-width:1.5px;
+    classDef pass stroke-width:2.5px;
+    classDef stop stroke-width:2px,stroke-dasharray:5 3;
     class O,G,S input;
     class R stop;
 ```
@@ -29,14 +38,23 @@ Identity cleanup is optional caller-side work: `assess()` does not call `canonic
 Only `prepare_proof` and `verify_then_prepare` produce a proof plan. Its final step is `human_review_before_contact`; the module performs no contact. Lower bands return no proof plan.
 
 ```mermaid
-flowchart LR
-    S["<b>Heuristic score</b>"] --> B{"Proof band?"}
-    B -- Yes --> P["<b>Small proof plan</b>"]
-    P --> H["<b>Human review</b><br/>Before contact"]
-    B -- No --> X["<b>Research / deprioritize</b><br/>No proof plan"]
-    classDef input fill:#e8e6df,stroke:#55534a,color:#20201d,stroke-width:2px;
-    classDef pass fill:#d2e5d8,stroke:#38734d,color:#183923,stroke-width:2px;
-    classDef stop fill:#f4dadd,stroke:#b14253,color:#611c29,stroke-width:2px;
+---
+config:
+  flowchart:
+    curve: linear
+    nodeSpacing: 28
+    rankSpacing: 42
+---
+flowchart TB
+    accTitle: Priority: prepare evidence, then stop for review
+    accDescr: Decision flow for priority: prepare evidence, then stop for review.
+    S["Heuristic score"] --> B{"Proof band?"}
+    B -- Yes --> P["Small proof plan"]
+    P --> H["Human review<br/>Before contact"]
+    B -- No --> X["Research / deprioritize<br/>No proof plan"]
+    classDef input stroke-width:1.5px;
+    classDef pass stroke-width:2.5px;
+    classDef stop stroke-width:2px,stroke-dasharray:5 3;
     class S,B,X input;
     class P pass;
     class H stop;
