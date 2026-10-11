@@ -9,6 +9,12 @@ Tracking parameters or title formatting make the same source look new. Response:
 ## Distinct query-backed opportunities collapse together
 A canonicalizer strips an identity-bearing query such as `?id=42` and accidentally treats it as the same source as `?id=43`. Response: preserve non-tracking query parameters and canonicalize their ordering.
 
+## Non-Latin opportunity titles collapse into one duplicate identity
+An ASCII-only title filter can turn different Nepali, Hindi, Arabic or Chinese titles into the same empty string, merging separate records that share a source page. Response: preserve Unicode letters, numbers and combining marks in title normalization while removing punctuation and normalizing width/case.
+
+## IPv6 source URLs become malformed during canonicalization
+A URL parser returns an IPv6 hostname without its original authority brackets; writing it back without brackets changes how the address parses. Response: preserve bracketed IPv6 authorities and normalize default ports without corrupting the host.
+
 ## Heuristic weights look empirically authoritative
 Specific values such as 22, 16, and 12 are mistaken for measured conversion effects. Response: document them as explicit default policy constants and keep provenance visible; do not claim calibration without evidence.
 

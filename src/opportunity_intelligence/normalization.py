@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .models import Opportunity
@@ -33,6 +34,9 @@ def canonical_url(url: str) -> str:
         raise ValueError("credentials_not_allowed_in_source_url")
 
     host = parts.hostname.lower()
+    # urlsplit() removes IPv6 brackets; restore them for a valid URL authority.
+    if ":" in host:
+        host = f"[{host}]"
     if parts.port is not None:
         default_port = (scheme == "http" and parts.port == 80) or (
             scheme == "https" and parts.port == 443
@@ -55,7 +59,14 @@ def canonical_url(url: str) -> str:
 
 
 def normalized_title(title: str) -> str:
-    return " ".join(re.findall(r"[a-z0-9]+", title.lower()))
+    # Preserve Unicode letters, numbers and combining marks, including scripts
+    # where diacritics are essential to distinguish one title from another.
+    normalized = unicodedata.normalize("NFKC", title).casefold()
+    words = "".join(
+        ch if unicodedata.category(ch)[0] in {"L", "M", "N"} else " "
+        for ch in normalized
+    )
+    return " ".join(words.split())
 
 
 def duplicate_key(opportunity: Opportunity) -> tuple[str, str]:
