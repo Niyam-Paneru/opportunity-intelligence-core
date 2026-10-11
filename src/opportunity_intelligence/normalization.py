@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import unicodedata
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
