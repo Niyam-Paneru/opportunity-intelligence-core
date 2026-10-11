@@ -60,7 +60,7 @@ flowchart TB
     class H stop;
 ```
 
-`canonical_url()` removes known tracking parameters and fragments while retaining identity-bearing query parameters. It preserves repeated-key value order while canonicalizing keys. `duplicate_key()` combines the URL with a normalized title.
+`canonical_url()` removes known tracking parameters and fragments while retaining identity-bearing query parameters. It preserves repeated-key value order while canonicalizing keys, and retains the brackets required by IPv6 URL authorities. `duplicate_key()` combines the URL with a Unicode-aware normalized title (including non-Latin scripts and combining marks).
 
 ## What the score means
 
