@@ -1,103 +1,36 @@
 # Opportunity Intelligence Core
 
-A lead looks promising. Should it be investigated, rejected, or prepared for human review? This Python module does **hard eligibility checks before applying an explainable priority score**.
+When I look at a pile of possible opportunities, half the problem is deciding which one deserves attention first.
 
-It normalizes duplicate links and reports why it assigned a score. High scores are queue positions, not prophecies; no crystal ball was harmed during development.
+This is a Python experiment in making that choice **explainable** instead of just assigning each lead a mysterious 92/100 and acting impressed by it.
 
-**Try it / check the behavior:**
+First it checks hard eligibility conditions. Only eligible items reach the scoring rubric. Then it records which reasons added or removed points and puts the result in a review band.
+
+| Score | What the code suggests |
+| --- | --- |
+| 75–100 | Prepare a small proof |
+| 55–74 | Verify what is missing, then prepare |
+| 35–54 | Research further |
+| 0–34 | Deprioritize |
+| Hard reject | Stop before scoring |
+
+If it prepares proof, the last step is **human review before contact**. The module does not send applications or messages.
+
+## A score is not a crystal ball
+
+The weights (22, 16, 12, and so on) are hand-chosen policy constants. They are **not** learned from hiring results or calibrated success probabilities. A score of 83 means "the rubric says inspect this sooner," not "83% chance of getting paid."
+
+The eligibility rules also include geography and remote-status gates. Whether those are the *right* gates for a particular search is a policy decision — not a fact established by this library.
+
+I also added URL normalization: tracking-only differences can collapse to one candidate while identity-bearing query values stay distinct. Otherwise half the work would be prioritizing the same opportunity six times.
+
+## Check the code
 
 ```powershell
 $env:PYTHONPATH = "src"
 python -m unittest discover -s tests
 ```
 
-Heuristic policy, not a trained hiring or revenue predictor; it contacts nobody. [Verification](docs/verification.md).
+[Eligibility](src/opportunity_intelligence/gates.py) · [scoring](src/opportunity_intelligence/scoring.py) · [planning](src/opportunity_intelligence/planning.py) · [normalization](src/opportunity_intelligence/normalization.py) · [tests](tests/).
 
-## Eligibility: reject before spending effort on a score
-
-Dangerous or regulated scope, expiry, remote ineligibility, or geography ineligibility triggers rejection. `assess()` returns before calling `score()`.
-
-```mermaid
----
-config:
-  flowchart:
-    curve: linear
-    nodeSpacing: 28
-    rankSpacing: 42
----
-flowchart LR
-    accTitle: Eligibility: reject before spending effort on a score
-    accDescr: Decision flow for eligibility: reject before spending effort on a score.
-    O["assess opportunity"] --> G{"Hard reject?"}
-    G -- Yes --> R["Reject<br/>Score 0, scoring bypassed"]
-    G -- No --> S["Heuristic score<br/>Named reasons"]
-    classDef input stroke-width:1.5px;
-    classDef pass stroke-width:2.5px;
-    classDef stop stroke-width:2px,stroke-dasharray:5 3;
-    class O,G,S input;
-    class R stop;
-```
-
-Identity cleanup is optional caller-side work: `assess()` does not call `canonical_url()` or `duplicate_key()`.
-
-## Priority: prepare evidence, then stop for review
-
-Only `prepare_proof` and `verify_then_prepare` produce a proof plan. Its final step is `human_review_before_contact`; the module performs no contact. Lower bands return no proof plan.
-
-```mermaid
----
-config:
-  flowchart:
-    curve: linear
-    nodeSpacing: 28
-    rankSpacing: 42
----
-flowchart TB
-    accTitle: Priority: prepare evidence, then stop for review
-    accDescr: Decision flow for priority: prepare evidence, then stop for review.
-    S["Heuristic score"] --> B{"Proof band?"}
-    B -- Yes --> P["Small proof plan"]
-    P --> H["Human review<br/>Before contact"]
-    B -- No --> X["Research / deprioritize<br/>No proof plan"]
-    classDef input stroke-width:1.5px;
-    classDef pass stroke-width:2.5px;
-    classDef stop stroke-width:2px,stroke-dasharray:5 3;
-    class S,B,X input;
-    class P pass;
-    class H stop;
-```
-
-`canonical_url()` removes known tracking parameters and fragments while retaining identity-bearing query parameters. It preserves repeated-key value order while canonicalizing keys. `duplicate_key()` combines the URL with a normalized title.
-
-## What the score means
-
-`scoring.py` returns the positive contributions and penalties in `reasons`.
-
-The `22/16/12/...` weights are **explicit policy choices**, not learned parameters, probabilities, or calibrated conversion estimates. No dataset or outcome study derives them here. A higher score means only “inspect this first under the current rubric.”
-
-| Score / gate | Decision | Next step |
-|---|---|---|
-| Any hard reject | `reject` | Stop; scoring is bypassed |
-| 75–100 | `prepare_proof` | Build a small reversible proof, then human review |
-| 55–74 | `verify_then_prepare` | Verify missing evidence, then prepare proof |
-| 35–54 | `research` | Gather evidence; no proof plan |
-| 0–34 | `deprioritize` | Spend attention elsewhere |
-
-## Inspect the implementation
-
-| File | What to verify |
-|---|---|
-| [`src/opportunity_intelligence/normalization.py`](src/opportunity_intelligence/normalization.py) | conservative URL canonicalization and deterministic duplicate identity |
-| [`src/opportunity_intelligence/gates.py`](src/opportunity_intelligence/gates.py) | hard rejection conditions |
-| [`src/opportunity_intelligence/scoring.py`](src/opportunity_intelligence/scoring.py) | visible additive heuristic and decision bands |
-| [`src/opportunity_intelligence/planning.py`](src/opportunity_intelligence/planning.py) | small proof plan ending in human review |
-| [`src/opportunity_intelligence/core.py`](src/opportunity_intelligence/core.py) | hard gates return before scoring |
-| [`tests/`](tests/) | strong opportunity, hard reject, query-safe duplicate identity, bands, planning |
-
-Verification commands and what they prove: [`docs/verification.md`](docs/verification.md).
-
-## What the score cannot tell you
-
-The repository proves deterministic triage behavior only. It does not claim predictive accuracy, production conversion performance, or automatic outreach.
-
-See [`PROVENANCE.md`](PROVENANCE.md) for the scoring and extraction history.
+No account access, recruiter messaging, real submissions, payment, or claimed predictive performance. It's a deterministic triage core. [Verification](docs/verification.md) · [provenance](PROVENANCE.md).
