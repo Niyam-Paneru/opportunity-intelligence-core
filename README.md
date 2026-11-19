@@ -24,55 +24,7 @@ The eligibility rules also include geography and remote-status gates. Whether th
 
 I also added URL normalization: tracking-only differences can collapse to one candidate while identity-bearing query values stay distinct. Otherwise half the work would be prioritizing the same opportunity six times.
 
-## The two-step triage
-
-Eligibility gets a veto *before* anybody calculates a score.
-
-```mermaid
----
-config:
-  flowchart:
-    curve: linear
-    nodeSpacing: 28
-    rankSpacing: 42
----
-flowchart LR
-    accTitle: Eligibility: reject before spending effort on a score
-    accDescr: Decision flow for eligibility: reject before spending effort on a score.
-    O["assess opportunity"] --> G{"Hard reject?"}
-    G -- Yes --> R["Reject<br/>Score 0, scoring bypassed"]
-    G -- No --> S["Heuristic score<br/>Named reasons"]
-    classDef input stroke-width:1.5px;
-    classDef pass stroke-width:2.5px;
-    classDef stop stroke-width:2px,stroke-dasharray:5 3;
-    class O,G,S input;
-    class R stop;
-```
-
-A high scoring item becomes a proof plan, not an automatic contact.
-
-```mermaid
----
-config:
-  flowchart:
-    curve: linear
-    nodeSpacing: 28
-    rankSpacing: 42
----
-flowchart TB
-    accTitle: Priority: prepare evidence, then stop for review
-    accDescr: Decision flow for priority: prepare evidence, then stop for review.
-    S["Heuristic score"] --> B{"Proof band?"}
-    B -- Yes --> P["Small proof plan"]
-    P --> H["Human review<br/>Before contact"]
-    B -- No --> X["Research / deprioritize<br/>No proof plan"]
-    classDef input stroke-width:1.5px;
-    classDef pass stroke-width:2.5px;
-    classDef stop stroke-width:2px,stroke-dasharray:5 3;
-    class S,B,X input;
-    class P pass;
-    class H stop;
-```
+No prediction dashboard here: an explicit policy chooses what deserves attention, and human review stays between a proof plan and any contact.
 
 [Eligibility](src/opportunity_intelligence/gates.py) · [scoring](src/opportunity_intelligence/scoring.py) · [planning](src/opportunity_intelligence/planning.py) · [normalization](src/opportunity_intelligence/normalization.py) · [tests](tests/).
 
