@@ -1,10 +1,17 @@
 # Opportunity Intelligence Core
 
-Deterministic triage for public opportunities: reject ineligible work before scoring, apply a transparent heuristic policy, and stop higher-priority cases at human review before any contact.
+A lead looks promising. Should it be investigated, rejected, or prepared for human review? This Python module does **hard eligibility checks before applying an explainable priority score**.
 
-**Hard rejects do not get consolation points.**
+It normalizes duplicate links and reports why it assigned a score. High scores are queue positions, not prophecies; no crystal ball was harmed during development.
 
-This public sample comes from my private acquisition tooling. It makes the triage policy inspectable; I can adapt the rubric and build the surrounding discovery, review, and application workflows. Account access, contact data, submissions, messaging, and payment behavior stay outside this sample.
+**Try it / check the behavior:**
+
+```powershell
+$env:PYTHONPATH = "src"
+python -m unittest discover -s tests
+```
+
+Heuristic policy, not a trained hiring or revenue predictor; it contacts nobody. [Verification](docs/verification.md).
 
 ## Eligibility: reject before spending effort on a score
 
