@@ -1,8 +1,8 @@
 # Opportunity Intelligence Core
 
-A list of twenty opportunities can turn into an afternoon of ranking spreadsheets instead of investigating any of them. Spreadsheets are surprisingly good at looking productive.
+A job spreadsheet can become a work of art. Color-coded priorities, thoughtful notes, beautiful columns — and somehow still no applications.
 
-This Python experiment tries to prevent that. It **filters, scores, and explains** possible opportunities instead of giving each lead a mysterious number without showing where it came from.
+I built this Python experiment to stop the spreadsheet from winning. It **filters, scores, and explains** opportunities, so there's an actual reason behind the next thing to investigate.
 
 First come hard eligibility checks. Then eligible candidates get scored against explicit reasons and placed in a review band.
 
@@ -16,7 +16,7 @@ First come hard eligibility checks. Then eligible candidates get scored against 
 
 **Human review comes before contact.** The code prepares a proof plan; it doesn't apply, email anyone, or magically produce a paycheck.
 
-## What the score does — and doesn't — mean
+## An 83 is not an 83% chance of getting hired
 
 The weights (22, 16, 12, etc.) are hand-chosen **policy constants**, not probabilities learned from job outcomes. An 83 means “this rubric prioritizes it.” It does **not** mean an 83% chance of getting hired.
 
@@ -28,4 +28,4 @@ Open [eligibility](src/opportunity_intelligence/gates.py), [scoring](src/opportu
 
 This is a **deterministic triage core**, not a validated hiring predictor or an autonomous job applicant. No recruiter messages, accounts, real submissions, or payments are included. [Verification](docs/verification.md) · [provenance](PROVENANCE.md).
 
-A high score is a reason to investigate a lead, not a substitute for reading it.
+The next step after a high score is still reading the opportunity. Sadly, the rubric can't do the interview for you.
