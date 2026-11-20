@@ -1,31 +1,31 @@
 # Opportunity Intelligence Core
 
-When I look at a pile of possible opportunities, half the problem is deciding which one deserves attention first.
+Give me twenty possible jobs and I can spend the entire day deciding which one to look at first. By evening, I've organized the spreadsheet beautifully and applied to absolutely nothing.
 
-This is a Python experiment in making that choice **explainable** instead of just assigning each lead a mysterious 92/100 and acting impressed by it.
+This Python experiment tries to prevent that. It **filters, scores, and explains** possible opportunities instead of giving each lead a mysterious number and calling it strategy.
 
-First it checks hard eligibility conditions. Only eligible items reach the scoring rubric. Then it records which reasons added or removed points and puts the result in a review band.
+First come hard eligibility checks. Then eligible candidates get scored against explicit reasons and placed in a review band.
 
 | Score | What the code suggests |
 | --- | --- |
 | 75–100 | Prepare a small proof |
-| 55–74 | Verify what is missing, then prepare |
+| 55–74 | Verify missing evidence, then prepare |
 | 35–54 | Research further |
 | 0–34 | Deprioritize |
 | Hard reject | Stop before scoring |
 
-If it prepares proof, the last step is **human review before contact**. The module does not send applications or messages.
+**Human review comes before contact.** The code prepares a proof plan; it doesn't apply, email anyone, or magically produce a paycheck.
 
-## A score is not a crystal ball
+## The number is not a fortune teller
 
-The weights (22, 16, 12, and so on) are hand-chosen policy constants. They are **not** learned from hiring results or calibrated success probabilities. A score of 83 means "the rubric says inspect this sooner," not "83% chance of getting paid."
+The weights (22, 16, 12, etc.) are hand-chosen **policy constants**, not probabilities learned from job outcomes. An 83 means “this rubric prioritizes it.” It does **not** mean an 83% chance of getting hired.
 
-The eligibility rules also include geography and remote-status gates. Whether those are the *right* gates for a particular search is a policy decision — not a fact established by this library.
+The rubric has geography and remote-status eligibility gates. Whether those are sensible for a particular search is a separate policy decision, not evidence that cross-border work is impossible.
 
-I also added URL normalization: tracking-only differences can collapse to one candidate while identity-bearing query values stay distinct. Otherwise half the work would be prioritizing the same opportunity six times.
+URL normalization merges tracking-only variations while keeping identity-bearing parameters distinct. Otherwise the same lead can appear six times and start looking like a very popular employer.
 
-No prediction dashboard here: an explicit policy chooses what deserves attention, and human review stays between a proof plan and any contact.
+Open [eligibility](src/opportunity_intelligence/gates.py), [scoring](src/opportunity_intelligence/scoring.py), [planning](src/opportunity_intelligence/planning.py), [normalization](src/opportunity_intelligence/normalization.py), and [tests](tests/).
 
-[Eligibility](src/opportunity_intelligence/gates.py) · [scoring](src/opportunity_intelligence/scoring.py) · [planning](src/opportunity_intelligence/planning.py) · [normalization](src/opportunity_intelligence/normalization.py) · [tests](tests/).
+This is a **deterministic triage core**, not a validated hiring predictor or an autonomous job applicant. No recruiter messages, accounts, real submissions, or payments are included. [Verification](docs/verification.md) · [provenance](PROVENANCE.md).
 
-No account access, recruiter messaging, real submissions, payment, or claimed predictive performance. It's a deterministic triage core. [Verification](docs/verification.md) · [provenance](PROVENANCE.md).
+If the rubric says “great opportunity,” the next step is still to read the job. Computers do not get to replace reading with optimism.
