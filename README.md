@@ -1,8 +1,8 @@
 # Opportunity Intelligence Core
 
-You can spend an entire afternoon color-coding job leads. By dinner, the spreadsheet looks ready for a promotion. Nobody has applied anywhere.
+A job-search spreadsheet can have thirty leads, six colors and a very satisfied owner. Applications sent: zero.
 
-I wrote this Python opportunity-triage core because sorting work isn't the same as doing work. It **filters, scores, and explains** leads, then suggests the next small proof to prepare. No mysterious “the AI says this one's 92/100, trust me.”
+This little Python project helps me decide which opportunities are worth my time. It explains each lead's score and suggests the smallest useful proof I could prepare.
 
 First come hard eligibility checks. Then eligible candidates get scored against explicit reasons and placed in a review band.
 
@@ -16,7 +16,7 @@ First come hard eligibility checks. Then eligible candidates get scored against 
 
 **Human review comes before contact.** The code prepares a proof plan; it doesn't apply, email anyone, or magically produce a paycheck.
 
-## 83 points. Not 83% hired. Sorry.
+## 83 points, not an 83% chance of a job
 
 The weights (22, 16, 12, etc.) are hand-chosen **policy constants**, not probabilities learned from job outcomes. An 83 means “this rubric prioritizes it.” It does **not** mean an 83% chance of getting hired.
 
